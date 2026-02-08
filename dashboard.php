@@ -1,3 +1,22 @@
+<?php
+include "db.php";
+
+/* total professors */
+$p_result = $conn->query("SELECT COUNT(*) as total FROM professors");
+$p_row = $p_result->fetch_assoc();
+$total_professors = $p_row['total'];
+
+/* total reviews */
+$r_result = $conn->query("SELECT COUNT(*) as total FROM reviews");
+$r_row = $r_result->fetch_assoc();
+$total_reviews = $r_row['total'];
+
+/* total departments */
+$d_result = $conn->query("SELECT COUNT(DISTINCT department) as total FROM professors");
+$d_row = $d_result->fetch_assoc();
+$total_departments = $d_row['total'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,13 +30,14 @@
 <!-- TOP NAV -->
 <div id="p1">
 
-    <a href="dashboard.html">
+    <a href="dashboard.php">
         <h2 id="logo">AIUB Faculty Review</h2>
     </a>
 
     <a href="professors.php">Professors</a>
-    <a href="department.php">Departments</a>
-    <a href="toprated.php">Top Rated</a>
+    <a href="#">Departments</a>
+    <a href="#">Top Rated</a>
+    <a href="#">Recent Reviews</a>
 
 </div>
 
@@ -26,14 +46,13 @@
 
     <h2 class="welcome">Welcome to AIUB Faculty Review</h2>
 
-    <!-- SEARCH BAR -->
-<div class="search-bar">
-    <input type="text" placeholder="Search faculty by name...">
-    <button>Search</button>
-</div>
+    <!-- SEARCH BAR (unchanged) -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search faculty by name...">
+        <button>Search</button>
+    </div>
 
-
-    <!-- ANNOUNCEMENT -->
+    <!-- ANNOUNCEMENT (unchanged) -->
     <div id="announcement_panel">
         <h2>📢 Notice</h2>
         <div class="announcement_box">
@@ -42,21 +61,21 @@
         </div>
     </div>
 
-    <!-- DASHBOARD STATS -->
+    <!-- STATS (now dynamic) -->
     <div class="stats">
         <div class="card">
             <h3>Professors</h3>
-            <p>42</p>
+            <p><?php echo $total_professors; ?></p>
         </div>
 
         <div class="card">
             <h3>Total Reviews</h3>
-            <p>318</p>
+            <p><?php echo $total_reviews; ?></p>
         </div>
 
         <div class="card">
             <h3>Departments</h3>
-            <p>7</p>
+            <p><?php echo $total_departments; ?></p>
         </div>
     </div>
 
