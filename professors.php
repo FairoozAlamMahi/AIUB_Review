@@ -1,3 +1,31 @@
+<?php
+include "db.php";
+
+/* ================= FILTER LOGIC ================= */
+
+$where = "";
+
+if (isset($_GET['faculty'])) {
+    $faculty = $conn->real_escape_string($_GET['faculty']);
+    $where = "WHERE faculty = '$faculty'";
+}
+
+if (isset($_GET['department'])) {
+    $department = $conn->real_escape_string($_GET['department']);
+    $where = "WHERE department = '$department'";
+}
+
+/* ================= GET PROFESSORS ================= */
+
+$sql = "SELECT * FROM professors $where ORDER BY name ASC";
+$result = $conn->query($sql);
+
+/* ================= GET FILTER DATA ================= */
+
+$faculties = $conn->query("SELECT DISTINCT faculty FROM professors ORDER BY faculty ASC");
+$departments = $conn->query("SELECT DISTINCT department FROM professors ORDER BY department ASC");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,35 +55,51 @@
 
     <h2 class="welcome">Browse Professors</h2>
 
+    <!-- SEARCH BAR (UI only for now) -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search faculty by name...">
+        <button>Search</button>
+    </div>
+
+    <!-- FILTERS -->
+    <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+
+        <!-- Faculty -->
+        <select onchange="filterFaculty(this.value)">
+            <option value="">Filter by Faculty</option>
+            <?php while($f = $faculties->fetch_assoc()): ?>
+                <option value="<?php echo htmlspecialchars($f['faculty']); ?>">
+                    <?php echo $f['faculty']; ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+
+        <!-- Department -->
+        <select onchange="filterDepartment(this.value)">
+            <option value="">Filter by Department</option>
+            <?php while($d = $departments->fetch_assoc()): ?>
+                <option value="<?php echo htmlspecialchars($d['department']); ?>">
+                    <?php echo $d['department']; ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+
+        <!-- Clear -->
+        <button onclick="window.location='professors.php'">Clear</button>
+
+    </div>
+
+    <!-- PROFESSOR GRID -->
     <div class="prof-grid">
 
-        <div class="prof-card">
-            <img src="images/default-prof.png" alt="">
-            <h3>Dr. Ahmed Rahman</h3>
-            <p>CSE</p>
-            <div class="rating">⭐ 4.2</div>
-        </div>
-
-        <div class="prof-card">
-            <img src="images/default-prof.png" alt="">
-            <h3>Ms. Farzana Islam</h3>
-            <p>BBA</p>
-            <div class="rating">⭐ 3.9</div>
-        </div>
-
-        <div class="prof-card">
-            <img src="images/default-prof.png" alt="">
-            <h3>Dr. Tanvir Hasan</h3>
-            <p>EEE</p>
-            <div class="rating">⭐ 4.5</div>
-        </div>
-
-        <div class="prof-card">
-            <img src="images/default-prof.png" alt="">
-            <h3>Ms. Nusrat Jahan</h3>
-            <p>ENG</p>
-            <div class="rating">⭐ 4.0</div>
-        </div>
+        <?php while($row = $result->fetch_assoc()): ?>
+            <div class="prof-card" onclick="goProfile(<?php echo $row['id']; ?>)">
+                <img src="images/professors/<?php echo $row['image']; ?>" alt="">
+                <h3><?php echo $row['name']; ?></h3>
+                <p><?php echo $row['department']; ?></p>
+                <div class="rating">⭐ <?php echo number_format($row['average_rating'], 1); ?></div>
+            </div>
+        <?php endwhile; ?>
 
     </div>
 
@@ -71,6 +115,29 @@
     <p>© 2026 AIUB Faculty Review</p>
     <p>Student opinions only • Not an official university platform</p>
 </div>
+
+<!-- SCRIPT -->
+<script>
+function filterFaculty(value) {
+    if (value === "") {
+        window.location = "professors.php";
+    } else {
+        window.location = "professors.php?faculty=" + encodeURIComponent(value);
+    }
+}
+
+function filterDepartment(value) {
+    if (value === "") {
+        window.location = "professors.php";
+    } else {
+        window.location = "professors.php?department=" + encodeURIComponent(value);
+    }
+}
+
+function goProfile(id) {
+    window.location.href = "professor.php?id=" + id;
+}
+</script>
 
 </body>
 </html>

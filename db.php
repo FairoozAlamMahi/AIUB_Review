@@ -3,7 +3,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "AIUB_Review";
+$db   = "aiubreview";
 
 $conn = new mysqli($host, $user, $pass, $db);
 

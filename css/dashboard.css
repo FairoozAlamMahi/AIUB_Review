@@ -142,9 +142,8 @@ body {
     margin-top: 80px;
 }
 
+/* ================= PROFESSOR GRID ================= */
 
-
-/* PROFESSOR GRID */
 .prof-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -159,6 +158,9 @@ body {
     text-align: center;
     cursor: pointer;
     transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .prof-card:hover {
@@ -166,20 +168,89 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+/* IMAGE - FINAL BEST VERSION */
 .prof-card img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
+    width: 100%;
+    height: 180px;
+    object-fit: contain;   /* shows full face */
+    background: #f2f2f2;
+    border-radius: 6px;
     margin-bottom: 10px;
 }
 
 .prof-card h3 {
+    font-size: 16px;
     margin: 5px 0;
+}
+
+.prof-card p {
+    font-size: 14px;
+    color: #666;
 }
 
 .rating {
     margin-top: 8px;
     font-weight: bold;
     color: #6c5ce7;
+}
+
+/* LINKS INSIDE CARDS */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+
+/* STAR RATING */
+.star-rating {
+    font-size: 28px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.star-rating span {
+    transition: 0.2s;
+}
+
+.star-rating span.active {
+    color: #ffc107;
+}
+
+
+
+/* STAR RATING */
+.star-rating {
+    font-size: 40px;
+    cursor: pointer;
+    color: #ccc;
+    user-select: none;
+}
+
+.star-rating span {
+    transition: 0.2s;
+    margin-right: 5px;
+}
+
+.star-rating span.active {
+    color: #ffc107;
+    transform: scale(1.1);
+}
+
+
+.star-rating {
+    font-size: 40px;
+    cursor: pointer;
+    color: #ccc;
+    user-select: none;
+}
+
+.star-rating span {
+    transition: 0.2s;
+    margin-right: 5px;
+}
+
+.star-rating span.active {
+    color: #ffc107;
+    transform: scale(1.1);
 }

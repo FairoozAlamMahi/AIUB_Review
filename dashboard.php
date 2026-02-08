@@ -46,13 +46,13 @@ $total_departments = $d_row['total'];
 
     <h2 class="welcome">Welcome to AIUB Faculty Review</h2>
 
-    <!-- SEARCH BAR (unchanged) -->
+    <!-- SEARCH BAR -->
     <div class="search-bar">
         <input type="text" placeholder="Search faculty by name...">
         <button>Search</button>
     </div>
 
-    <!-- ANNOUNCEMENT (unchanged) -->
+    <!-- ANNOUNCEMENT -->
     <div id="announcement_panel">
         <h2>📢 Notice</h2>
         <div class="announcement_box">
@@ -61,22 +61,27 @@ $total_departments = $d_row['total'];
         </div>
     </div>
 
-    <!-- STATS (now dynamic) -->
+    <!-- STATS -->
     <div class="stats">
-        <div class="card">
+
+        <!-- Professors (clickable via JS) -->
+        <div class="card" onclick="goProfessors()" style="cursor:pointer;">
             <h3>Professors</h3>
             <p><?php echo $total_professors; ?></p>
         </div>
 
+        <!-- Reviews -->
         <div class="card">
             <h3>Total Reviews</h3>
             <p><?php echo $total_reviews; ?></p>
         </div>
 
+        <!-- Departments -->
         <div class="card">
             <h3>Departments</h3>
             <p><?php echo $total_departments; ?></p>
         </div>
+
     </div>
 
 </div>
@@ -91,6 +96,13 @@ $total_departments = $d_row['total'];
     <p>© 2026 AIUB Faculty Review</p>
     <p>Student opinions only • Not an official university platform</p>
 </div>
+
+<!-- SCRIPT -->
+<script>
+function goProfessors() {
+    window.location.href = "professors.php";
+}
+</script>
 
 </body>
 </html>
