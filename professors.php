@@ -55,13 +55,15 @@ $departments = $conn->query("SELECT DISTINCT department FROM professors ORDER BY
 
     <h2 class="welcome">Browse Professors</h2>
 
-    <!-- SEARCH BAR (UI only for now) -->
-    <div class="search-bar">
-        <input type="text" placeholder="Search faculty by name...">
+    <!-- ================= LIVE SEARCH ================= -->
+    <div class="search-bar" style="position:relative;">
+        <input type="text" id="searchInput" placeholder="Search faculty by name..." autocomplete="off">
         <button>Search</button>
+
+        <div id="searchResults"></div>
     </div>
 
-    <!-- FILTERS -->
+    <!-- ================= FILTERS ================= -->
     <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
 
         <!-- Faculty -->
@@ -89,7 +91,7 @@ $departments = $conn->query("SELECT DISTINCT department FROM professors ORDER BY
 
     </div>
 
-    <!-- PROFESSOR GRID -->
+    <!-- ================= PROFESSOR GRID ================= -->
     <div class="prof-grid">
 
         <?php while($row = $result->fetch_assoc()): ?>
@@ -116,7 +118,7 @@ $departments = $conn->query("SELECT DISTINCT department FROM professors ORDER BY
     <p>Student opinions only • Not an official university platform</p>
 </div>
 
-<!-- SCRIPT -->
+<!-- ================= SCRIPT ================= -->
 <script>
 function filterFaculty(value) {
     if (value === "") {
@@ -137,6 +139,26 @@ function filterDepartment(value) {
 function goProfile(id) {
     window.location.href = "professor.php?id=" + id;
 }
+
+/* ================= LIVE SEARCH ================= */
+
+const input = document.getElementById("searchInput");
+const results = document.getElementById("searchResults");
+
+input.addEventListener("keyup", function () {
+    const q = this.value;
+
+    if (q.length < 1) {
+        results.innerHTML = "";
+        return;
+    }
+
+    fetch("search_professors.php?q=" + encodeURIComponent(q))
+        .then(res => res.text())
+        .then(data => {
+            results.innerHTML = data;
+        });
+});
 </script>
 
 </body>
