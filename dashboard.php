@@ -47,9 +47,12 @@ $total_departments = $d_row['total'];
     <h2 class="welcome">Welcome to AIUB Faculty Review</h2>
 
     <!-- SEARCH BAR -->
-    <div class="search-bar">
-        <input type="text" placeholder="Search faculty by name...">
+    <div class="search-bar" style="position:relative;">
+        <input type="text" id="searchInput" placeholder="Search faculty by name..." autocomplete="off">
         <button>Search</button>
+
+        <!-- suggestions -->
+        <div id="searchResults"></div>
     </div>
 
     <!-- ANNOUNCEMENT -->
@@ -64,19 +67,16 @@ $total_departments = $d_row['total'];
     <!-- STATS -->
     <div class="stats">
 
-        <!-- Professors (clickable via JS) -->
         <div class="card" onclick="goProfessors()" style="cursor:pointer;">
             <h3>Professors</h3>
             <p><?php echo $total_professors; ?></p>
         </div>
 
-        <!-- Reviews -->
         <div class="card">
             <h3>Total Reviews</h3>
             <p><?php echo $total_reviews; ?></p>
         </div>
 
-        <!-- Departments -->
         <div class="card">
             <h3>Departments</h3>
             <p><?php echo $total_departments; ?></p>
@@ -102,6 +102,29 @@ $total_departments = $d_row['total'];
 function goProfessors() {
     window.location.href = "professors.php";
 }
+
+function goProfile(id) {
+    window.location.href = "professor.php?id=" + id;
+}
+
+/* LIVE SEARCH */
+const input = document.getElementById("searchInput");
+const results = document.getElementById("searchResults");
+
+input.addEventListener("keyup", function () {
+    const q = this.value;
+
+    if (q.length < 1) {
+        results.innerHTML = "";
+        return;
+    }
+
+    fetch("search_professors.php?q=" + encodeURIComponent(q))
+        .then(res => res.text())
+        .then(data => {
+            results.innerHTML = data;
+        });
+});
 </script>
 
 </body>

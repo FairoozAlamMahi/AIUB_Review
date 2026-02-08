@@ -254,3 +254,27 @@ body {
     color: #ffc107;
     transform: scale(1.1);
 }
+
+
+
+/* SEARCH RESULTS */
+#searchResults {
+    position: absolute;
+    top: 45px;
+    width: 100%;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.search-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search-item:hover {
+    background: #f2f2f2;
+}
